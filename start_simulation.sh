@@ -42,6 +42,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/sort_data.py"
 	#Generar mallado gmsh
 	cd "$nombre_carpeta/"
+	mkdir freesurface
 	gmsh "$archivo_geoi" -3
 
 	#Genera mallado OpenFoam

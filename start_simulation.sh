@@ -26,6 +26,8 @@ for ((i = 1; i <= $cantidad; i++)); do
 	cp -r "Case_0/0.orig/" "$nombre_carpeta/"
 	cp -r "Case_0/constant/" "$nombre_carpeta/"
 	cp -r "Case_0/system/" "$nombre_carpeta/"
+	cp "Case_0/extract_freesurface.py" "$nombre_carpeta/"
+	cp "Case_0/sort_data.py" "$nombre_carpeta/"
 
 	# Copia un archivo dentro de la carpeta
 	archivo_geo="Case_0/flume.geo"
@@ -36,7 +38,8 @@ for ((i = 1; i <= $cantidad; i++)); do
 	# Realiza el intercambio en el archivo
 	valor_lc="${valores_lc[i - 1]}"
 	sed -i "s/\$lcc/$valor_lc/g" "$nombre_carpeta/$archivo_geoi"
-
+	sed -i "s/\$i/$i/g" "$nombre_carpeta/extract_freesurface.py"
+	sed -i "s/\$i/$i/g" "$nombre_carpeta/sort_data.py"
 	#Generar mallado gmsh
 	cd "$nombre_carpeta/"
 	gmsh "$archivo_geoi" -3
@@ -58,6 +61,9 @@ for ((i = 1; i <= $cantidad; i++)); do
 	setFields
 	decomposePar
 	mpirun -np 6 interIsoFoam -parallel
+	pvbatch extract_freesurface.py
+	python3 sort_data.py
+	rm data*
 	cd ..
 done
 

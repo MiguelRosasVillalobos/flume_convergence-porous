@@ -4,7 +4,7 @@
 # Lista de valores para lc
 valores_lc=("0.03" "0.025" "0.02" "0.015" "0.01" "0.009" "0.008" "0.007" "0.006" "0.005")
 # Lista de valores para p
-valores_p=("0.1" "0.2" "0.3" "0.4" "0.5")
+valores_p=("1.5" "2.5" "3.5" "4.05" "5.05")
 
 # Verifica si se proporciona la cantidad como argumento
 if [ $# -eq 0 ]; then

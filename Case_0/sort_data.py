@@ -2,7 +2,7 @@ import pandas as pd
 
 
 # Número de archivos
-n = 300
+n = 3000
 
 # Crear una lista con los nombres de archivo
 file_names = [f"data_case$i_{i}.csv" for i in range(n)]

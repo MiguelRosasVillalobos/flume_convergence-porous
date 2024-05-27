@@ -85,6 +85,9 @@ renderView1.Update()
 # create a new 'Contour'
 contour1 = Contour(registrationName='Contour1', Input=slice2)
 
+# Properties modified on contour1
+contour1.Isosurfaces = [0.25]
+
 # show data in view
 contour1Display = Show(contour1, renderView1, 'GeometryRepresentation')
 

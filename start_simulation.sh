@@ -3,8 +3,6 @@
 
 # Lista de valores para lc
 valores_lc=("0.03" "0.025" "0.02" "0.015" "0.01" "0.009" "0.008" "0.007" "0.006" "0.005")
-# Lista de valores para p
-valores_p=("1.5" "2.5" "3.5" "4.05" "5.05")
 
 # Verifica si se proporciona la cantidad como argumento
 if [ $# -eq 0 ]; then
@@ -31,6 +29,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	cp "Case_0/extract_freesurface.py" "$nombre_carpeta/"
 	cp "Case_0/sort_data.py" "$nombre_carpeta/"
 	cp "Case_0/extract_freesurface_plane.py" "$nombre_carpeta/"
+	cp "Case_0/extract_freesurface.sh" "$nombre_carpeta/"
 
 	# Copia un archivo dentro de la carpeta
 	archivo_geo="Case_0/flume.geo"
@@ -66,27 +65,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	setFields
 	decomposePar
 	mpirun -np 6 interIsoFoam -parallel
-	pvbatch extract_freesurface.py
-	python3 sort_data.py
-	rm data*
-	for p in "${valores_p[@]}"; do
-		# Crear un archivo temporal para el script modificado
-		temp_script="temp_script_$p.py"
-
-		# Copia el script original a un script temporal
-		cp extract_freesurface_plane.py $temp_script
-
-		# Usa sed para reemplazar '$p' en el script temporal con el valor actual de p
-		sed -i "s/\$p/$p/g" $temp_script
-
-		# Ejecuta el script Python modificado
-		pvpython $temp_script
-
-		# Opcional: Eliminar el script temporal después de la ejecución
-		rm $temp_script
-
-		# Opcional: Añadir otros comandos aquí si es necesario
-	done
+	bash ./extract_freesurface.sh
 	cd ..
 done
 

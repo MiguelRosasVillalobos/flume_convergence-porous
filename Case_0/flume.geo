@@ -32,7 +32,7 @@ Recombine Surface {1};
 
 // Extrude the surface to create a volume
 Extrude {0, 0, wt} {
-    Surface{1}; Layers{5}; Recombine;
+    Surface{1}; Layers{2}; Recombine;
 }
 
 // Define the volume as transfinite

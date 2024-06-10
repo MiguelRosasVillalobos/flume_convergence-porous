@@ -2,7 +2,7 @@
 #Miguel Rosas
 
 # Lista de valores para lc
-valores_lc=("0.025" "0.02" "0.01" "0.009" "0.008" "0.007")
+valores_lc=("0.025" "0.02" "0.01" "0.009" "0.007" "0.005")
 
 # Verifica si se proporciona la cantidad como argumento
 if [ $# -eq 0 ]; then
@@ -64,7 +64,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	sed -i '23s/patch/empty/ ' "constant/polyMesh/boundary"
 	setFields
 	decomposePar
-	mpirun -np 6 interIsoFoam -parallel
+	mpirun -np 8 interIsoFoam -parallel
 	bash ./extract_freesurface.sh
 	cd ..
 done

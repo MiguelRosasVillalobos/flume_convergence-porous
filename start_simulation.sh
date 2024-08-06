@@ -4,6 +4,10 @@
 # Lista de valores para lc
 valores_lc=("0.025" "0.02" "0.01" "0.009" "0.007" "0.005")
 
+# Leer valores desde el archivo parametros.txt
+n=$(grep -oP 'n\s*=\s*\K[\d.+-]+' parameters.txt)
+a=$(grep -oP 'a\s*=\s*\K[\d.+-]+' parameters.txt)
+
 # Verifica si se proporciona la cantidad como argumento
 if [ $# -eq 0 ]; then
 	echo "Uso: $0 cantidad"
@@ -31,6 +35,10 @@ for ((i = 1; i <= $cantidad; i++)); do
 	cp "Case_0/extract_freesurface_plane.py" "$nombre_carpeta/"
 	cp "Case_0/extract_freesurface.sh" "$nombre_carpeta/"
 
+	ddir=$(pwd)
+	sed -i "s|\$ddir|$ddir|g" "./$nombre_carpeta/extract_freesurface_plane.py"
+	sed -i "s|\$ddir|$ddir|g" "./$nombre_carpeta/extract_freesurface.py"
+
 	# Copia un archivo dentro de la carpeta
 	archivo_geo="Case_0/flume.geo"
 	archivo_geoi="flume_Case_$i.geo"
@@ -43,6 +51,9 @@ for ((i = 1; i <= $cantidad; i++)); do
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/extract_freesurface.py"
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/extract_freesurface_plane.py"
 	sed -i "s/\$i/$i/g" "$nombre_carpeta/sort_data.py"
+	sed -i "s/\$nn/$n/g" "$nombre_carpeta/constant/porosityProperties"
+	sed -i "s/\$nn/$n/g" "$nombre_carpeta/system/setFields"
+	sed -i "s/\$aa/$a/g" "$nombre_carpeta/system/setFields"
 	#Generar mallado gmsh
 	cd "$nombre_carpeta/"
 	mkdir freesurface
@@ -65,7 +76,7 @@ for ((i = 1; i <= $cantidad; i++)); do
 	setFields
 	decomposePar
 	mpirun -np 8 interIsoFoam -parallel
-	bash ./extract_freesurface.sh
+	kitty --hold -e bash -c "./extract_freesurface.sh && python3 extractor.py && rm -r ./proce*; exec bash" &
 	cd ..
 done
 

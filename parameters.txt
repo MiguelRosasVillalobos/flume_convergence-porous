@@ -2,4 +2,4 @@
 n = 0.1 // -
 
 //distance between plates
-a = 0.1 // m
+a = 0 // m

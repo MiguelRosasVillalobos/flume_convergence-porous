@@ -97,7 +97,7 @@ for n in "${valores_n[@]}"; do
         sed -i '23s/patch/empty/ ' "constant/polyMesh/boundary"
         setFields
         decomposePar
-        mpirun -np 8 interIsoFoam -parallel >log
+        mpirun -np 6 interIsoFoam -parallel >log
         kitty --hold -e bash -c "./extract_freesurface.sh && python3 extractor.py && rm -r ./proce*; exec bash" &
         cd ..
       done

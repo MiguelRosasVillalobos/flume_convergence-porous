@@ -1,0 +1,118 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2306                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+l 6;
+hm 0.4;
+h 0.3;
+wt 0.01;
+H 0.06;
+
+nx $lcc;
+ny 50;
+nz 1;
+
+h1 #eval{$h+$H};
+h2 #eval{$h-$H};
+
+// New vertices for h+H and h-H
+vertices
+(
+    (0 0 0) // 0
+    ($l 0 0) // 1
+    ($l $hm 0) // 2
+    (0 $hm 0) // 3
+    (0 0 $wt) // 4
+    ($l 0 $wt) // 5
+    ($l $hm $wt) // 6
+    (0 $hm $wt) // 7
+    (0 $h2 0) // 8
+    ($l $h2 0) // 9
+    ($l $h1 0) // 10
+    (0 $h1 0) // 11
+    (0 $h2 $wt) // 12
+    ($l $h2 $wt) // 13
+    ($l $h1 $wt) // 14
+    (0 $h1 $wt) // 15
+);
+
+// Updated blocks with refinement at h+H and h-H
+blocks
+(
+    hex (0 1 9 8 4 5 13 12) ($nx $ny 2) simpleGrading (1 1 1)
+    hex (8 9 10 11 12 13 14 15) ($nx $ny 2) simpleGrading (1 1 1)
+    hex (11 10 2 3 15 14 6 7) ($nx 5 2) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (0 8 12 4)
+            (8 11 15 12)
+            (3 11 15 7)
+
+        );
+    }
+    rightWall
+    {
+        type wall;
+        faces
+        (
+            (1 9 13 5)
+            (9 10 14 13)
+            (2 10 14 6)
+        );
+    }
+    lowerWall
+    {
+        type wall;
+        faces
+        (
+            (0 1 5 4)
+        );
+    }
+    atmosphere
+    {
+        type patch;
+        faces
+        (
+            (3 2 6 7)
+        );
+    }
+    sides
+    {
+        type empty;
+        faces
+        (
+        (0 1 9 8)
+        (4 5 13 12)
+        (8 9 10 11)
+        (12 13 14 15)
+        (11 10 2 3)
+        (15 14 6 7)
+        );
+    }
+);
+
+mergePatchPairs
+(
+);

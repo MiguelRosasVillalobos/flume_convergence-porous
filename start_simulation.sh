@@ -2,10 +2,10 @@
 #Miguel Rosas
 
 # Lista de valores para lc
-valores_lc=("0.025" "0.02" "0.01" "0.009" "0.007" "0.005")
+valores_lc=("200" "400" "600" "800" "1000" "1200")
 
 # Leer valores desde el archivo parametros.txt
-valores_n=("0.1" "0.25" "0.5" "0.6" "0.7" "0.75" "0.8")
+valores_n=("0.25" "0.5" "0.6" "0.7" "0.75" "0.8")
 valores_a=("0" "0.05" "0.05" "0" "0.436" "0.301" "0.07" "0.7" "0.25" "0" "0.25" "0" "0.25" "0")
 
 # Bucle para crear y mover carpetas, editar y generar mallado
@@ -73,28 +73,29 @@ for n in "${valores_n[@]}"; do
         cp "$archivo_geo" "$Case_lc/$archivo_geoi"
 
         # Realiza el intercambio en el archivo
-        sed -i "s/\$lcc/$lc/g" "$Case_lc/$archivo_geoi"
+        sed -i "s/\$lcc/$lc/g" "$Case_lc/system/blockMeshDict"
         sed -i "s/\$i/lc$lc_sanitizado/g" "$Case_lc/extract_freesurface_plane.py"
         sed -i "s/\$i/lc$lc_sanitizado/g" "$Case_lc/extractor.py"
 
         #Generar mallado gmsh
         cd "$Case_lc/"
-        gmsh "$archivo_geoi" -3
+        # gmsh "$archivo_geoi" -3
 
         #Genera mallado OpenFoam
-        gmshToFoam "flume_Case_$lc_sanitizado.msh"
+        # gmshToFoam "flume_Case_$lc_sanitizado.msh"
 
         #Lineas a eliminar en polymesh/boundary
-        lineas_eliminar=("24" "30" "36" "42" "48" "54")
+        # lineas_eliminar=("24" "30" "36" "42" "48" "54")
 
         #Itera sobre las líneas a eliminar y utiliza sed para quitarlas
-        for numero_linea in "${lineas_eliminar[@]}"; do
-          sed -i "${numero_linea}d" "constant/polyMesh/boundary"
-        done
+        # for numero_linea in "${lineas_eliminar[@]}"; do
+        #   sed -i "${numero_linea}d" "constant/polyMesh/boundary"
+        # done
 
         # Reemplaza "patch" por "wall"
-        sed -i '29s/patch/wall/; 35s/patch/wall/ ' "constant/polyMesh/boundary"
-        sed -i '23s/patch/empty/ ' "constant/polyMesh/boundary"
+        # sed -i '29s/patch/wall/; 35s/patch/wall/ ' "constant/polyMesh/boundary"
+        # sed -i '23s/patch/empty/ ' "constant/polyMesh/boundary"
+        blockMesh
         setFields
         decomposePar
         mpirun -np 6 interIsoFoam -parallel >log

@@ -2,7 +2,7 @@
 #Miguel Rosas
 
 # Lista de valores para lc
-valores_lc=("50" "100" "200" "300" "400")
+valores_lc=("100" "200" "300" "400" "500")
 
 # Leer valores desde el archivo parametros.txt
 valores_n=("0.25" "0.5" "0.6" "0.7" "0.75" "0.8")

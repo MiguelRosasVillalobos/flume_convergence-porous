@@ -4,7 +4,7 @@ clc;
 clear all;
 % Definir el nombre del archivo
 filename = 'Kr_lci.csv';
-cases = 6;
+cases = 5;
 
 % Asegurarse de que el archivo esté vacío o crear uno nuevo
 if exist(filename, 'file')
@@ -18,14 +18,13 @@ fprintf(fid, '%s,%s\n', headers{:});
 fclose(fid);
 
 % Definir el cell array de nombres de archivos
-files = {'freesurface_caselc0_025.txt';
-         'freesurface_caselc0_02.txt';
-         'freesurface_caselc0_01.txt';
-         'freesurface_caselc0_009.txt';
-         'freesurface_caselc0_007.txt';
-         'freesurface_caselc0_005.txt'};
+files = {'freesurface_caselc100.txt';
+         'freesurface_caselc200.txt';
+         'freesurface_caselc300.txt';
+         'freesurface_caselc400.txt';
+         'freesurface_caselc500.txt'};
 
-a = [1,2,3,4,5,6];
+a = [1,2,3,4,5];
 
 
 for cas=1:cases

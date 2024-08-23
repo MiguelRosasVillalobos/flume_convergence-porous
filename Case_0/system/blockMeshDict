@@ -18,41 +18,50 @@ hm 0.4;
 h 0.3;
 wt 0.01;
 H 0.06;
+dx 0.5;
+p11 4;
 
 nx $lcc;
-ny 50;
-nz 1;
+ny 20;
+nz 2;
+
 
 h1 #eval{$h+$H};
 h2 #eval{$h-$H};
+dp11 #eval{$p11 - $dx};
 
-// New vertices for h+H and h-H
 vertices
 (
-    (0 0 0) // 0
-    ($l 0 0) // 1
-    ($l $hm 0) // 2
-    (0 $hm 0) // 3
-    (0 0 $wt) // 4
-    ($l 0 $wt) // 5
-    ($l $hm $wt) // 6
-    (0 $hm $wt) // 7
-    (0 $h2 0) // 8
-    ($l $h2 0) // 9
-    ($l $h1 0) // 10
-    (0 $h1 0) // 11
-    (0 $h2 $wt) // 12
-    ($l $h2 $wt) // 13
-    ($l $h1 $wt) // 14
-    (0 $h1 $wt) // 15
+   (0 0 0) //0
+   ($dp11 0 0) //1
+   ($dp11 $h2 0) //2
+   (0 $h2 0) //3
+   (0 0 $wt) //4
+   ($dp11 0 $wt) //5
+   ($dp11 $h2 $wt) //6
+   (0 $h2 $wt) //7
+   ($dp11 $h1 0) //8
+   (0 $h1 0) //9
+   ($dp11 $h1 $wt) //10
+   (0 $h1 $wt) //11
+   ($l 0 0) //12
+   ($l $h2 0) //13
+   ($l 0 $wt) //14
+   ($l $h2 $wt) //15
+   ($l $h1 0) //16
+   ($l $h1 $wt) //17
 );
 
-// Updated blocks with refinement at h+H and h-H
 blocks
 (
-    hex (0 1 9 8 4 5 13 12) ($nx $ny 2) simpleGrading (1 1 1)
-    hex (8 9 10 11 12 13 14 15) ($nx $ny 2) simpleGrading (1 1 1)
-    hex (11 10 2 3 15 14 6 7) ($nx 5 2) simpleGrading (1 1 1)
+    //bottom1
+    hex (0 1 2 3 4 5 6 7) (#eval{1*$nx} $ny $nz) simpleGrading (1 1 1)
+    //interface1
+    hex (3 2 8 9 7 6 10 11) (#eval{1*$nx} $ny $nz) simpleGrading (1 1 1)
+    //bottom2
+    hex (1 12 13 2 5 14 15 6) (#eval{2*$nx} $ny $nz) simpleGrading (1 1 1)
+    //interface2
+    hex (2 13 16 8 6 15 17 10) (#eval{2*$nx} $ny $nz) simpleGrading (1 1 1)
 );
 
 edges
@@ -66,10 +75,8 @@ boundary
         type patch;
         faces
         (
-            (0 8 12 4)
-            (8 11 15 12)
-            (3 11 15 7)
-
+        (4 0 3 7)
+        (7 3 9 11)
         );
     }
     rightWall
@@ -77,9 +84,8 @@ boundary
         type wall;
         faces
         (
-            (1 9 13 5)
-            (9 10 14 13)
-            (2 10 14 6)
+        (12 14 15 13)
+        (13 15 17 16)
         );
     }
     lowerWall
@@ -87,7 +93,8 @@ boundary
         type wall;
         faces
         (
-            (0 1 5 4)
+        (0 4 5 1)
+        (1 5 14 12)
         );
     }
     atmosphere
@@ -95,7 +102,8 @@ boundary
         type patch;
         faces
         (
-            (3 2 6 7)
+        (11 9 8 10)
+        (10 8 16 17)
         );
     }
     sides
@@ -103,12 +111,14 @@ boundary
         type empty;
         faces
         (
-        (0 1 9 8)
-        (4 5 13 12)
-        (8 9 10 11)
-        (12 13 14 15)
-        (11 10 2 3)
-        (15 14 6 7)
+        (0 1 2 3)
+        (4 5 6 7)
+        (3 2 8 9)
+        (7 6 10 11)
+        (1 12 13 2)
+        (5 14 15 6)
+        (2 13 16 8)
+        (6 15 17 10)
         );
     }
 );

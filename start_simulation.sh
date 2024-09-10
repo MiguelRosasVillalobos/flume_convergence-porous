@@ -2,11 +2,11 @@
 #Miguel Rosas
 
 # Lista de valores para lc
-valores_lc=("100" "200" "300" "400" "500")
+valores_lc=("100" "200" "300" "400" "500" "600")
 
 # Leer valores desde el archivo parametros.txt
-valores_n=("0.25" "0.5" "0.6" "0.7" "0.75" "0.8")
-valores_a=("0.05" "0" "0.436" "0.301" "0.07" "0.7" "0.25" "0" "0.25" "0" "0.25" "0")
+valores_n=("0.25" "0.5" "0.6" "0.75" "0.8")
+valores_a=("0.05" "0" "0.436" "0.301" "0.07" "0.7" "0.25" "0" "0.25" "0")
 
 # Bucle para crear y mover carpetas, editar y generar mallado
 index_a=0
